@@ -11,7 +11,7 @@ use League\Csv\Writer;
 class BookController extends Controller 
 {
     public function index() {
-        $books = Book::all();
+        $books = Book::where('stocks', '!=', '0')->get();
 
         return view('Admin.Books.books', [
             'books' => $books
@@ -41,7 +41,7 @@ class BookController extends Controller
             'book_name' => $name,
             'book_author' => $author,
             'book_cover' => $cover,
-            'stock' => $stock,
+            'stocks' => $stock,
         ]);
     }
 
@@ -58,7 +58,7 @@ class BookController extends Controller
             'book_name' => $request->input('book_name') ?? $book->book_name,
             'book_author' => $request->input('book_author') ?? $book->book_author,
             'book_cover' => $request->input('book_cover') ?? $book->book_cover,
-            'stock' => $request->input('stock') ?? $book->stock,
+            'stocks' => $request->input('stock') ?? $book->stock,
         ]);
     }
 
@@ -100,7 +100,7 @@ class BookController extends Controller
         $csv->insertOne(['Book Name', 'Author', 'Cover', 'Stock']);
 
         foreach ($data as $row) {
-            $csv->insertOne([$row->book_name, $row->book_author, $row->book_cover, $row->stock]);
+            $csv->insertOne([$row->book_name, $row->book_author, $row->book_cover, $row->stocks]);
         }
 
         $filename = 'exported_book.csv';

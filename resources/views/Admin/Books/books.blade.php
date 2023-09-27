@@ -22,6 +22,9 @@
     </style>
 </head>
 
+<form action="{{route('auth.logout')}}" method="post" class="float-right m-3">
+    <button type="submit" class="btn btn-light">Logout</button>
+</form>
 
 <div class="container mt-5">
     <div class="text-center">
