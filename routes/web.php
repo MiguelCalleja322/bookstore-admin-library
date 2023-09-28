@@ -1,9 +1,11 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\BookController;
-use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\FavoritesController;
+use App\Http\Controllers\RequestBookController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,11 +21,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::group(['prefix' => 'auth'], function ($route) {
-    $route->get('/', [AuthController::class, 'index'])->name('auth.index')->middleware('check_auth');
+    $route->get('/', [AuthController::class, 'index'])->name('auth.index');
     $route->post('/login', [AuthController::class, 'login'])->name('auth.login');
-    $route->group(['middleware' => ['auth']], function($route) {
-        $route->post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
-    });
+    $route->get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 });
 
 Route::group(['prefix' => 'admin'], function ($route) {
@@ -35,8 +35,32 @@ Route::group(['prefix' => 'admin'], function ($route) {
         $route->post('/import', [BookController::class, 'import'])->name('admin.book.import');
         $route->get('/export', [BookController::class, 'export'])->name('admin.book.export');
     });
+
+    $route->group(['prefix' => 'user', 'middleware' => ['check_role:admin']], function ($route) {
+        $route->post('/', [AdminController::class, 'store'])->name('admin.user.store');
+    });
+});
+
+Route::group(['prefix' => 'user'], function ($route) {
+    $route->group(['prefix' => 'book', 'middleware' => ['check_role:user', 'check_auth']], function ($route) {
+        $route->get('/', [UserController::class, 'index'])->name('user.book.index');
+        $route->post('/borrow', [UserController::class, 'borrow'])->name('user.book.borrow');
+        $route->post('/addToFavorite', [UserController::class, 'addToFavorite'])->name('user.book.addToFavorite');
+        $route->post('/requestABook', [UserController::class, 'requestABook'])->name('user.book.requestABook');
+    });
+
+    $route->group(['prefix' => 'favorites', 'middleware' => ['check_role:user', 'check_auth']], function ($route) {
+        $route->get('/', [FavoritesController::class, 'index'])->name('user.favorites.index');
+    });
+
+    $route->group(['prefix' => 'requested_books', 'middleware' => ['check_role:user', 'check_auth']], function ($route) {
+        $route->get('/', [RequestBookController::class, 'index'])->name('user.requestbook.index');
+    });
 });
 
 Route::get('/', function () {
-    return redirect('/auth');
-})->middleware('check_auth');
+    return redirect()->route('auth.index');
+});
+
+
+// ->middleware('check_auth');

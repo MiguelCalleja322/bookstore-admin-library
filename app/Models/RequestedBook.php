@@ -4,14 +4,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Book extends Model
+class RequestedBook extends Model
 {
-    use SoftDeletes;
-
     protected $fillable = [
+        'user_id',
         'book_name',
-        'book_author',
-        'book_cover',
-        'stocks'
+        'book_author'
     ];
+
+    public function user() {
+        return $this->belongsTo('user_id', 'id');
+    }
 }

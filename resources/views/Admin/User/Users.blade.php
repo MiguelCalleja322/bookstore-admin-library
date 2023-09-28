@@ -27,7 +27,7 @@
 <div class="container mt-5">
     <div class="text-center">
         <h1>
-            Book Admin Library
+            Users Management Library
         </h1>
     </div>
 
@@ -41,11 +41,8 @@
        
     </div>
 
-    <div class="mb-3 flex">
-        <button type="button" class="btn btn-success" id="open-store-modal">Create Book</button>
-        <button type="button" class="btn btn-primary" id="open-import-modal">Import Book</button>
+    <div class="mb-3 flex">   
         <button type="button" class="btn btn-warning" id="open-adduser-modal">Add User</button>
-        <a type="button" class="btn btn-secondary" id="open-import-secondary" href="{{ route('admin.book.export') }}">Export</a>
     </div>
 
     <div class="p-4 border border-secondary">
@@ -53,21 +50,21 @@
             <thead>
                 <tr class="text-center">
                     <th scope="col" width="25%">Name</th>
-                    <th scope="col">Author</th>
-                    <th scope="col">Cover</th>
-                    <th scope="col">Stock</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Profile Picture</th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($books as $book)
+                @foreach ($users as $user)
                     <tr>
-                        <td class="m-auto">{{$book->book_name}}</td>
-                        <td class="m-auto">{{$book->book_author}}</td>
+                        <td class="m-auto">{{$user->name}}</td>
+                        <td class="m-auto">{{$user->username}}</td>
                         <td>
-                            <img src="{{$book->book_cover}}" alt="" width="150" height="200">
+                            <img src="{{$user->email}}" alt="" width="150" height="200">
                         </td>
-                        <td class="m-auto">{{$book->stocks}}</td>
+                        <td class="m-auto">{{$user->profile_pic}}</td>
                         <td class="">
                             <div class="flex text-center">
                                 
@@ -75,10 +72,10 @@
                                     type="button" 
                                     class="btn btn-secondary text-white" 
                                     id="open-view-modal"
-                                    data-name="{{$book->book_name}}"
-                                    data-author="{{$book->book_author}}"
-                                    data-cover="{{$book->book_cover}}"
-                                    data-stock="{{$book->stocks}}">
+                                    data-name="{{$user->name}}"
+                                    data-username="{{$user->username}}"
+                                    data-email="{{$user->email}}"
+                                    data-profile_pic="{{$user->profile_pic}}">
                                     <i class="fa-solid fa-eye"></i>
                                     <span>View</span>
                                 </button>
@@ -87,16 +84,16 @@
                                     type="button" 
                                     class="btn btn-primary text-white" 
                                     id="open-update-modal"
-                                    data-id="{{$book->id}}"
-                                    data-name="{{$book->book_name}}"
-                                    data-author="{{$book->book_author}}"
-                                    data-cover="{{$book->book_cover}}"
-                                    data-stock="{{$book->stocks}}">
+                                    data-id="{{$user->id}}"
+                                    data-name="{{$user->name}}"
+                                    data-username="{{$user->username}}"
+                                    data-email="{{$user->email}}"
+                                    data-profile_pic="{{$user->profile_pic}}">
                                     <i class="fa-solid fa-pen-nib"></i>
                                     <span>Update</span>
                                 </button>
 
-                                <button type="button" class="btn btn-danger text-white" id="destroy" data-id="{{$book->id}}">
+                                <button type="button" class="btn btn-danger text-white" id="destroy" data-id="{{$user->id}}">
                                     <i class="fa-solid fa-trash"></i>
                                     <span>Delete</span>
                                 </button>
@@ -110,11 +107,9 @@
 </div>
 
 
-@include('Admin.Books.modals.view')
-@include('Admin.Books.modals.update')
-@include('Admin.Books.modals.store')
-@include('Admin.Books.modals.import')
-@include('Admin.Books.modals.add_user')
+@include('Admin.User.modals.view')
+@include('Admin.User.modals.update')
+@include('Admin.User.modals.store')
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js" integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
@@ -129,9 +124,9 @@
         $('#table #open-view-modal').on('click', function (e) {
 
             let name = $(this).data("name");
-            let author = $(this).data("author");
-            let cover = $(this).data("cover");
-            let stocks = $(this).data("stock");
+            let username = $(this).data("username");
+            let email = $(this).data("email");
+            let profile_pic = $(this).data("profile_pic");
         
             $('#view-modal .modal-title').text(name);
             $('#view-modal .modal-body img').attr('src', cover);
@@ -145,14 +140,14 @@
         $('#table #open-update-modal').on('click', function (e) {
             id = $(this).data("id");
             let name = $(this).data("name");
-            let author = $(this).data("author");
-            let cover = $(this).data("cover");
-            let stocks = $(this).data("stock");
+            let username = $(this).data("username");
+            let email = $(this).data("email");
+            let profile_pic = $(this).data("profile_pic");
 
             $('#update-modal #name').val(name);
-            $('#update-modal #author').val(author);
-            $('#update-modal #cover').val(cover);
-            $('#update-modal #stock').val(stocks);
+            $('#update-modal #author').val(username);
+            $('#update-modal #cover').val(email);
+            $('#update-modal #stock').val(profile_pic);
             $('#update-modal').modal('toggle');
         });
 
@@ -162,18 +157,18 @@
 
         $('#update-modal #update').on('click', function () {
             
-            let bookID = id; 
+            let userID = id; 
             let name = $('#update-modal #name').val();
-            let author = $('#update-modal #author').val();
-            let cover = $('#update-modal #cover').val();
-            let stocks = $('#update-modal #stock').val();
+            let username = $('#update-modal #author').val();
+            let email = $('#update-modal #cover').val();
+            let profile_pic = $('#update-modal #stock').val();
 
             let data = {
-                'id': bookID,
-                'book_name': name,
-                'book_author': author,
-                'book_cover': cover,
-                'stock': stocks,
+                'id': userID,
+                'name': name,
+                'username': username,
+                'email': email,
+                'profile_pic': profile_pic,
             };
             
             axios.post("{{ route('admin.book.update')}}", data)
@@ -196,77 +191,6 @@
             $('#adduser-modal').modal('hide');
         });
 
-        //store
-
-        $('#open-store-modal').on('click', function (e) {
-            $('#store-modal').modal('toggle');
-        });
-
-        $('#store-modal #close-modal').on('click', function () {
-            $('#store-modal #error-message').addClass('hidden');
-            $('#store-modal').modal('hide');
-        });
-
-        $('#store-modal #store').on('click', function () {
-            let name = $('#store-modal #name').val();
-            let author = $('#store-modal #author').val();
-            let cover = $('#store-modal #cover').val();
-            let stocks = $('#store-modal #stock').val();
-
-            if (name == '' || author == '' || cover == '') {
-                $('#store-modal #error-message').removeClass('hidden');
-                $('#store-modal #error-message span').text('Name, Author and Cover must not be empty');
-                return;
-            }
-
-            let data = {
-                'book_name': name,
-                'book_author': author,
-                'book_cover': cover,
-                'stocks': stocks,
-            };
-            
-            axios.post("{{ route('admin.book.store')}}", data)
-            .then(res => {
-                location.reload();
-            })
-
-            .catch(err => {
-                $('#store-modal #error-message').removeClass('hidden');
-                $('#store-modal #error-message span').text(err.message);
-            })
-        });
-
-        //delete
-
-         //update
-
-         $('#table #destroy').on('click', function (e) {
-            id = $(this).data("id");
-            
-            axios.post("{{ route('admin.book.delete') }}", {
-                book_id: id
-            })
-
-            .then(res => {
-                location.reload();
-            })
-
-            .catch(err => {
-                $('#error-message').removeClass('hidden');
-                $('#error-message span').text(err.message);
-            })
-        });
-
-        //open-import-modal
-
-        $('#open-import-modal').on('click', function (e) {
-            $('#import-modal').modal('toggle');
-        });
-
-        $('#open-import #close-modal').on('click', function () {
-            $('#import-modal').modal('hide');
-        });
     });
 
    

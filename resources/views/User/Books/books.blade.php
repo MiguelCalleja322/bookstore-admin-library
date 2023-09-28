@@ -1,4 +1,4 @@
-@include('Admin.Header.nav')
+@include('User.Header.nav')
 
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
@@ -27,7 +27,7 @@
 <div class="container mt-5">
     <div class="text-center">
         <h1>
-            Book Admin Library
+            Welcome to Books
         </h1>
     </div>
 
@@ -42,10 +42,9 @@
     </div>
 
     <div class="mb-3 flex">
-        <button type="button" class="btn btn-success" id="open-store-modal">Create Book</button>
-        <button type="button" class="btn btn-primary" id="open-import-modal">Import Book</button>
-        <button type="button" class="btn btn-warning" id="open-adduser-modal">Add User</button>
-        <a type="button" class="btn btn-secondary" id="open-import-secondary" href="{{ route('admin.book.export') }}">Export</a>
+        <a type="button" class="btn btn-success" id="open-store-modal">Request a Book</a>
+        <a type="button" class="btn btn-primary" id="open-favorites-modal" href="{{route('user.favorites.index')}}">View Favorites Book</a>
+        <a type="button" class="btn btn-primary" id="open-favorites-modal" href="{{route('user.requestbook.index')}}">View Requested Book</a>
     </div>
 
     <div class="p-4 border border-secondary">
@@ -70,10 +69,9 @@
                         <td class="m-auto">{{$book->stocks}}</td>
                         <td class="">
                             <div class="flex text-center">
-                                
                                 <button 
                                     type="button" 
-                                    class="btn btn-secondary text-white" 
+                                    class="btn btn-secondary text-white m-1" 
                                     id="open-view-modal"
                                     data-name="{{$book->book_name}}"
                                     data-author="{{$book->book_author}}"
@@ -85,20 +83,20 @@
 
                                 <button 
                                     type="button" 
-                                    class="btn btn-primary text-white" 
-                                    id="open-update-modal"
-                                    data-id="{{$book->id}}"
-                                    data-name="{{$book->book_name}}"
-                                    data-author="{{$book->book_author}}"
-                                    data-cover="{{$book->book_cover}}"
-                                    data-stock="{{$book->stocks}}">
+                                    class="btn btn-primary text-white m-1" 
+                                    id="add_to_favorite"
+                                    data-id="{{$book->id}}">
                                     <i class="fa-solid fa-pen-nib"></i>
-                                    <span>Update</span>
+                                    <span>Add To Favorite</span>
                                 </button>
-
-                                <button type="button" class="btn btn-danger text-white" id="destroy" data-id="{{$book->id}}">
-                                    <i class="fa-solid fa-trash"></i>
-                                    <span>Delete</span>
+                                
+                                <button 
+                                    type="button" 
+                                    class="btn btn-success text-white m-1" 
+                                    id="borrow_book"
+                                    data-id="{{$book->id}}">
+                                    <i class="fa-solid fa-pen-nib"></i>
+                                    <span>Borrow Book</span>
                                 </button>
                             </div>
                         </td>
@@ -110,11 +108,8 @@
 </div>
 
 
-@include('Admin.Books.modals.view')
-@include('Admin.Books.modals.update')
-@include('Admin.Books.modals.store')
-@include('Admin.Books.modals.import')
-@include('Admin.Books.modals.add_user')
+@include('User.Books.modals.view')
+@include('User.Books.modals.store')
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js" integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
@@ -140,60 +135,42 @@
             $('#view-modal').modal('toggle');
         });
 
-        //update
+        //add to fave
 
-        $('#table #open-update-modal').on('click', function (e) {
-            id = $(this).data("id");
-            let name = $(this).data("name");
-            let author = $(this).data("author");
-            let cover = $(this).data("cover");
-            let stocks = $(this).data("stock");
-
-            $('#update-modal #name').val(name);
-            $('#update-modal #author').val(author);
-            $('#update-modal #cover').val(cover);
-            $('#update-modal #stock').val(stocks);
-            $('#update-modal').modal('toggle');
-        });
-
-        $('#update-modal #close-modal').on('click', function () {
-            $('#update-modal').modal('hide');
-        })
-
-        $('#update-modal #update').on('click', function () {
-            
-            let bookID = id; 
-            let name = $('#update-modal #name').val();
-            let author = $('#update-modal #author').val();
-            let cover = $('#update-modal #cover').val();
-            let stocks = $('#update-modal #stock').val();
-
+        $('#table #add_to_favorite').on('click', function (e) {
+            let bookID = $(this).data("id");
+    
             let data = {
                 'id': bookID,
-                'book_name': name,
-                'book_author': author,
-                'book_cover': cover,
-                'stock': stocks,
             };
             
-            axios.post("{{ route('admin.book.update')}}", data)
+            axios.post("{{ route('user.book.addToFavorite')}}", data)
             .then(res => {
                 location.reload();
             })
             .catch(err => {
-                console.error(err.message); 
-            })
-        })
+                console.log(err)
 
-        //adduser-modal
-        
-        $('#open-adduser-modal').on('click', function (e) {
-            $('#adduser-modal').modal('toggle');
+                $('#error-message').removeClass('hidden');
+                $('#error-message span').text(err.response.data.error);
+            })
         });
-        
-        $('#adduser-modal #close-modal').on('click', function () {
-            $('#adduser-modal #error-message').addClass('hidden');
-            $('#adduser-modal').modal('hide');
+
+        $('#table #borrow_book').on('click', function (e) {
+            let bookID = $(this).data("id");
+    
+            let data = {
+                'id': bookID,
+            };
+            
+            axios.post("{{ route('user.book.borrow')}}", data)
+            .then(res => {
+                location.reload();
+            })
+            .catch(err => {
+                $('#error-message').removeClass('hidden');
+                $('#error-message span').text(err.response.data.error);
+            })
         });
 
         //store
@@ -210,23 +187,19 @@
         $('#store-modal #store').on('click', function () {
             let name = $('#store-modal #name').val();
             let author = $('#store-modal #author').val();
-            let cover = $('#store-modal #cover').val();
-            let stocks = $('#store-modal #stock').val();
-
-            if (name == '' || author == '' || cover == '') {
+           
+            if (name == '' || author == '') {
                 $('#store-modal #error-message').removeClass('hidden');
-                $('#store-modal #error-message span').text('Name, Author and Cover must not be empty');
+                $('#store-modal #error-message span').text('Name and Author must not be empty');
                 return;
             }
 
             let data = {
                 'book_name': name,
                 'book_author': author,
-                'book_cover': cover,
-                'stocks': stocks,
             };
             
-            axios.post("{{ route('admin.book.store')}}", data)
+            axios.post("{{ route('user.book.requestABook')}}", data)
             .then(res => {
                 location.reload();
             })
@@ -235,37 +208,6 @@
                 $('#store-modal #error-message').removeClass('hidden');
                 $('#store-modal #error-message span').text(err.message);
             })
-        });
-
-        //delete
-
-         //update
-
-         $('#table #destroy').on('click', function (e) {
-            id = $(this).data("id");
-            
-            axios.post("{{ route('admin.book.delete') }}", {
-                book_id: id
-            })
-
-            .then(res => {
-                location.reload();
-            })
-
-            .catch(err => {
-                $('#error-message').removeClass('hidden');
-                $('#error-message span').text(err.message);
-            })
-        });
-
-        //open-import-modal
-
-        $('#open-import-modal').on('click', function (e) {
-            $('#import-modal').modal('toggle');
-        });
-
-        $('#open-import #close-modal').on('click', function () {
-            $('#import-modal').modal('hide');
         });
     });
 
