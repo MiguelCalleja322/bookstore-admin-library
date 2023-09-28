@@ -13,6 +13,9 @@
             <a class="nav-link" href="{{route('auth.logout')}}">Logout</a>
             
           </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{{route('admin.user.index')}}">Users</a>
+          </li>
         </ul>
       </div>
     </div>

@@ -2,7 +2,7 @@
   <div class="modal-dialog" role="document">
       <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Update Book Details</h5>
+            <h5 class="modal-title">Update User Details</h5>
           </div>
         
           <div class="modal-body">
@@ -20,31 +20,31 @@
               
               <div class="row mt-3">
                   <div class="col-2">
-                    <span>Author:</span>
+                    <span>Username:</span>
                   </div>
                   
                   <div class="col-10">
-                    <input type="text" id="author" class="update-text">
+                    <input type="text" id="username" class="update-text">
                   </div>
               </div>
   
               <div class="row mt-3">
                   <div class="col-2">
-                    <span>Cover</span>
+                    <span>Email:</span>
                   </div>
   
                   <div class="col-10">
-                    <input type="text" id="cover" class="update-text">
+                    <input type="text" id="email" class="update-text">
                   </div>
               </div>
 
               <div class="row mt-3">
                 <div class="col-2">
-                  <span>Stock</span>
+                  <span>Profile Picture:</span>
                 </div>
 
                 <div class="col-10">
-                  <input type="text" id="stock" class="update-text">
+                  <input type="text" id="profile_pic" class="update-text">
                 </div>
               </div>
           </div>

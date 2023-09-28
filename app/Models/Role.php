@@ -6,4 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Role extends Model
 {
+    protected $fillable = [
+        'name'
+    ];
 }

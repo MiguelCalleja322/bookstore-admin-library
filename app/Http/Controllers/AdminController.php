@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
+use App\Models\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -10,13 +12,17 @@ class AdminController extends Controller
 {
 
     public function index() {
-        $user = User::whereHas(['userRole' => function ($userRole) {
-            $userRole->whereHas(['role' => function ($role) {
-                $role->where('name', '!=', 'admin');
-            }]);
-        }]); 
+        $role = Role::where('name','user')->first();
+        $userRoles = UserRole::where('role_id', $role->id)->get();
+        // $users = User::whereHas(['userRole' => function ($userRole) {
+        //     $userRole->whereHas(['role' => function ($role) {
+        //         $role->where('name', '!=', 'admin');
+        //     }]);
+        // }]); 
 
-        //return view here
+        return view('Admin.User.users', [
+            'users' => $userRoles
+        ]);
     }
 
     public function store(Request $request) {
@@ -40,6 +46,10 @@ class AdminController extends Controller
             'username' => $username,
             'password' => Hash::make($request->input('password')),
             'profile_pic' => $profilePic
+        ]);
+        $userrole = UserRole::create([
+            'user_id' => $user->id,
+            'role_id' => 2
         ]);
     }
 
@@ -66,5 +76,17 @@ class AdminController extends Controller
             'password' => Hash::make($request->input('password')),
             'profile_pic' => $profilePic
         ]);
-    }   
+    }  
+
+    public function delete(Request $request) {
+        $user = User::where('id', $request->input('id'))->first();
+
+        if (! $user) {
+            return response()->json([
+                'error' => 'User does not exist'
+            ], 404);
+        }
+
+        $user->delete();
+    }
 }

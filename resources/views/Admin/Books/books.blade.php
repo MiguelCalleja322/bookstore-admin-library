@@ -44,7 +44,7 @@
     <div class="mb-3 flex">
         <button type="button" class="btn btn-success" id="open-store-modal">Create Book</button>
         <button type="button" class="btn btn-primary" id="open-import-modal">Import Book</button>
-        <button type="button" class="btn btn-warning" id="open-adduser-modal">Add User</button>
+
         <a type="button" class="btn btn-secondary" id="open-import-secondary" href="{{ route('admin.book.export') }}">Export</a>
     </div>
 
@@ -114,7 +114,7 @@
 @include('Admin.Books.modals.update')
 @include('Admin.Books.modals.store')
 @include('Admin.Books.modals.import')
-@include('Admin.Books.modals.add_user')
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js" integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
@@ -185,16 +185,6 @@
             })
         })
 
-        //adduser-modal
-        
-        $('#open-adduser-modal').on('click', function (e) {
-            $('#adduser-modal').modal('toggle');
-        });
-        
-        $('#adduser-modal #close-modal').on('click', function () {
-            $('#adduser-modal #error-message').addClass('hidden');
-            $('#adduser-modal').modal('hide');
-        });
 
         //store
 

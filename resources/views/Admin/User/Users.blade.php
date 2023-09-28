@@ -42,7 +42,7 @@
     </div>
 
     <div class="mb-3 flex">   
-        <button type="button" class="btn btn-warning" id="open-adduser-modal">Add User</button>
+        <button type="button" class="btn btn-warning" id="open-store-modal">Add User</button>
     </div>
 
     <div class="p-4 border border-secondary">
@@ -59,12 +59,12 @@
             <tbody>
                 @foreach ($users as $user)
                     <tr>
-                        <td class="m-auto">{{$user->name}}</td>
-                        <td class="m-auto">{{$user->username}}</td>
+                        <td class="m-auto">{{$user->user->name}}</td>
+                        <td class="m-auto">{{$user->user->username}}</td>
+                        <td class="m-auto">{{$user->user->email}}</td>
                         <td>
-                            <img src="{{$user->email}}" alt="" width="150" height="200">
+                            <img src="{{$user->user->profile_pic}}" alt="" width="150" height="200">
                         </td>
-                        <td class="m-auto">{{$user->profile_pic}}</td>
                         <td class="">
                             <div class="flex text-center">
                                 
@@ -84,11 +84,11 @@
                                     type="button" 
                                     class="btn btn-primary text-white" 
                                     id="open-update-modal"
-                                    data-id="{{$user->id}}"
-                                    data-name="{{$user->name}}"
-                                    data-username="{{$user->username}}"
-                                    data-email="{{$user->email}}"
-                                    data-profile_pic="{{$user->profile_pic}}">
+                                    data-id="{{$user->user->id}}"
+                                    data-name="{{$user->user->name}}"
+                                    data-username="{{$user->user->username}}"
+                                    data-email="{{$user->user->email}}"
+                                    data-profile_pic="{{$user->user->profile_pic}}">
                                     <i class="fa-solid fa-pen-nib"></i>
                                     <span>Update</span>
                                 </button>
@@ -145,9 +145,9 @@
             let profile_pic = $(this).data("profile_pic");
 
             $('#update-modal #name').val(name);
-            $('#update-modal #author').val(username);
-            $('#update-modal #cover').val(email);
-            $('#update-modal #stock').val(profile_pic);
+            $('#update-modal #username').val(username);
+            $('#update-modal #email').val(email);
+            $('#update-modal #profile_pic').val(profile_pic);
             $('#update-modal').modal('toggle');
         });
 
@@ -159,9 +159,9 @@
             
             let userID = id; 
             let name = $('#update-modal #name').val();
-            let username = $('#update-modal #author').val();
-            let email = $('#update-modal #cover').val();
-            let profile_pic = $('#update-modal #stock').val();
+            let username = $('#update-modal #username').val();
+            let email = $('#update-modal #email').val();
+            let profile_pic = $('#update-modal #profile_pic').val();
 
             let data = {
                 'id': userID,
@@ -180,15 +180,15 @@
             })
         })
 
-        //adduser-modal
+        //store-modal
         
-        $('#open-adduser-modal').on('click', function (e) {
-            $('#adduser-modal').modal('toggle');
+        $('#open-store-modal').on('click', function (e) {
+            $('#store-modal').modal('toggle');
         });
         
-        $('#adduser-modal #close-modal').on('click', function () {
-            $('#adduser-modal #error-message').addClass('hidden');
-            $('#adduser-modal').modal('hide');
+        $('#store-modal #close-modal').on('click', function () {
+            $('#store-modal #error-message').addClass('hidden');
+            $('#store-modal').modal('hide');
         });
 
     });

@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class UserRole extends Model
 {
+    protected $fillable = [
+        'user_id',
+        'role_id'
+    ];
+
     public function user() {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }

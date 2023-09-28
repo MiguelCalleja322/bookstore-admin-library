@@ -37,7 +37,11 @@ Route::group(['prefix' => 'admin'], function ($route) {
     });
 
     $route->group(['prefix' => 'user', 'middleware' => ['check_role:admin']], function ($route) {
-        $route->post('/', [AdminController::class, 'store'])->name('admin.user.store');
+        $route->get('/index', [AdminController::class, 'index'])->name('admin.user.index');
+        $route->post('/store', [AdminController::class, 'store'])->name('admin.user.store');
+        $route->post('/update', [AdminController::class, 'update'])->name('admin.user.update');
+        $route->post('/delete', [AdminController::class, 'delete'])->name('admin.user.delete');
+
     });
 });
 
