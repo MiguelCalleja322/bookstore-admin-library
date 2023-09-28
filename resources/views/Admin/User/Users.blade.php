@@ -121,6 +121,9 @@
     $(function () {
         let table = new DataTable('#table');
         let id = null;
+
+        //view
+
         $('#table #open-view-modal').on('click', function (e) {
 
             let name = $(this).data("name");
@@ -128,22 +131,24 @@
             let email = $(this).data("email");
             let profile_pic = $(this).data("profile_pic");
         
-            $('#view-modal .modal-title').text(name);
-            $('#view-modal .modal-body img').attr('src', cover);
-            $('#view-modal #author').text('Author: ' +  author);
-            $('#view-modal #stock').text('Stocks: ' +  stocks);
+            $('#update-modal #id').val(id);
+            $('#update-modal #name').val(name);
+            $('#update-modal #username').val(username);
+            $('#update-modal #email').val(email);
+            $('#update-modal #profile_pic').val(profile_pic);
             $('#view-modal').modal('toggle');
         });
 
         //update
 
         $('#table #open-update-modal').on('click', function (e) {
-            id = $(this).data("id");
+            let id = $(this).data("id");
             let name = $(this).data("name");
             let username = $(this).data("username");
             let email = $(this).data("email");
             let profile_pic = $(this).data("profile_pic");
 
+            $('#update-modal #id').val(id);
             $('#update-modal #name').val(name);
             $('#update-modal #username').val(username);
             $('#update-modal #email').val(email);
@@ -153,31 +158,6 @@
 
         $('#update-modal #close-modal').on('click', function () {
             $('#update-modal').modal('hide');
-        })
-
-        $('#update-modal #update').on('click', function () {
-            
-            let userID = id; 
-            let name = $('#update-modal #name').val();
-            let username = $('#update-modal #username').val();
-            let email = $('#update-modal #email').val();
-            let profile_pic = $('#update-modal #profile_pic').val();
-
-            let data = {
-                'id': userID,
-                'name': name,
-                'username': username,
-                'email': email,
-                'profile_pic': profile_pic,
-            };
-            
-            axios.post("{{ route('admin.book.update')}}", data)
-            .then(res => {
-                location.reload();
-            })
-            .catch(err => {
-                console.error(err.message); 
-            })
         })
 
         //store-modal

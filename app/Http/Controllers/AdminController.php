@@ -47,7 +47,8 @@ class AdminController extends Controller
             'password' => Hash::make($request->input('password')),
             'profile_pic' => $profilePic
         ]);
-        $userrole = UserRole::create([
+        
+        UserRole::create([
             'user_id' => $user->id,
             'role_id' => 2
         ]);
@@ -66,16 +67,21 @@ class AdminController extends Controller
             ], 404);
         }
 
-        $profilePic = time().'.'.$request->profile_pic->getClientOriginalExtension();
-        $request->profile_pic->move(public_path('profile_pic'), $profilePic);
+        if($request->profile_pic) {
+            $profilePic = time().'.'.$request->profile_pic->getClientOriginalExtension();
+            $request->profile_pic->move(public_path('profile_pic'), $profilePic);
+        }
 
+      
         $user->update([
             'name' => $request->input('name'),
             'email' => $email,
             'username' => $username,
             'password' => Hash::make($request->input('password')),
-            'profile_pic' => $profilePic
+            'profile_pic' => $profilePic ?? $user->profile_pic
         ]);
+
+        return self::index();
     }  
 
     public function delete(Request $request) {
