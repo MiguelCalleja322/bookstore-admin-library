@@ -72,10 +72,10 @@
                                     type="button" 
                                     class="btn btn-secondary text-white" 
                                     id="open-view-modal"
-                                    data-name="{{$user->name}}"
-                                    data-username="{{$user->username}}"
-                                    data-email="{{$user->email}}"
-                                    data-profile_pic="{{$user->profile_pic}}">
+                                    data-name="{{$user->user->name}}"
+                                    data-username="{{$user->user->username}}"
+                                    data-email="{{$user->user->email}}"
+                                    data-profile_pic="{{$user->user->profile_pic}}">
                                     <i class="fa-solid fa-eye"></i>
                                     <span>View</span>
                                 </button>
@@ -125,19 +125,23 @@
         //view
 
         $('#table #open-view-modal').on('click', function (e) {
-
+            let id = $(this).data("id");
             let name = $(this).data("name");
             let username = $(this).data("username");
             let email = $(this).data("email");
             let profile_pic = $(this).data("profile_pic");
         
-            $('#update-modal #id').val(id);
-            $('#update-modal #name').val(name);
-            $('#update-modal #username').val(username);
-            $('#update-modal #email').val(email);
-            $('#update-modal #profile_pic').val(profile_pic);
+            $('#view-modal #id').val(id);
+            $('#view-modal #name').text(name);
+            $('#view-modal #username').text(username);
+            $('#view-modal #email').text(email);
+            $('#view-modal #profile_pic').attr('src',profile_pic);
             $('#view-modal').modal('toggle');
         });
+
+        $('#view-modal #close-modal').on('click', function () {
+            $('#view-modal').modal('hide');
+        })
 
         //update
 

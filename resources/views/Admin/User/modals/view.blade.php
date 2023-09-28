@@ -5,21 +5,26 @@
           <h5 class="modal-title"></h5>
         </div>
         <div class="modal-body text-center">
-            <div class="mx-auto">
-                <img src="" alt="" srcset="" width="200" height="300">
+            <div class="mx-auto"  name="profile_pic">
+                <img src="" alt="" srcset="" width="200" height="300" id="profile_pic">
             </div>
             
             <div class="mt-3 text-center">
-                <h3 id="author">
+                <h3 id="name" name="name">
 
                 </h3>
             </div>
 
             <div class="mt-3 text-center">
-              <h3 id="stock">
+              <h3 id="username" name="username">
 
               </h3>
-          </div>
+            </div>
+            <div class="mt-3 text-center">
+            <h3 id="email" name="email">
+
+            </h3>
+            </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" id="close-modal">Close</button>
