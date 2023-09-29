@@ -77,14 +77,4 @@ class UserController extends Controller
             'book_id' => $book->id
         ]);
     }
-
-    public function requestABook(Request $request) {
-        $authUser = Auth::user();
-
-        RequestedBook::create([
-            'user_id' => $authUser->id,
-            'book_name' => $request->input('book_name'),
-            'book_author' => $request->input('book_author')
-        ]);
-    }
 }

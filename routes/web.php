@@ -41,16 +41,20 @@ Route::group(['prefix' => 'admin'], function ($route) {
         $route->post('/store', [AdminController::class, 'store'])->name('admin.user.store');
         $route->post('/update', [AdminController::class, 'update'])->name('admin.user.update');
         $route->post('/delete', [AdminController::class, 'delete'])->name('admin.user.delete');
+    });
 
+    $route->group(['prefix' => 'requested_books', 'middleware' => ['check_role:admin']], function ($route) {
+        $route->get('/index', [RequestBookController::class, 'index'])->name('admin.requestedbook.index');
+        $route->post('/update', [RequestBookController::class, 'approveOrDisapprove'])->name('admin.requestedbooks.approveOrDisapprove');
     });
 });
+
 
 Route::group(['prefix' => 'user'], function ($route) {
     $route->group(['prefix' => 'book', 'middleware' => ['check_role:user', 'check_auth']], function ($route) {
         $route->get('/', [UserController::class, 'index'])->name('user.book.index');
         $route->post('/borrow', [UserController::class, 'borrow'])->name('user.book.borrow');
         $route->post('/addToFavorite', [UserController::class, 'addToFavorite'])->name('user.book.addToFavorite');
-        $route->post('/requestABook', [UserController::class, 'requestABook'])->name('user.book.requestABook');
     });
 
     $route->group(['prefix' => 'favorites', 'middleware' => ['check_role:user', 'check_auth']], function ($route) {
@@ -58,7 +62,8 @@ Route::group(['prefix' => 'user'], function ($route) {
     });
 
     $route->group(['prefix' => 'requested_books', 'middleware' => ['check_role:user', 'check_auth']], function ($route) {
-        $route->get('/', [RequestBookController::class, 'index'])->name('user.requestbook.index');
+        $route->get('/user_index', [RequestBookController::class, 'user_index'])->name('user.requestbook.user_index');
+        $route->post('/requestABook', [RequestBookController::class, 'requestABook'])->name('user.requestbook.requestABook');
     });
 });
 

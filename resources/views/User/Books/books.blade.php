@@ -44,7 +44,7 @@
     <div class="mb-3 flex">
         <a type="button" class="btn btn-success" id="open-store-modal">Request a Book</a>
         <a type="button" class="btn btn-primary" id="open-favorites-modal" href="{{route('user.favorites.index')}}">View Favorites Book</a>
-        <a type="button" class="btn btn-primary" id="open-favorites-modal" href="{{route('user.requestbook.index')}}">View Requested Book</a>
+        <a type="button" class="btn btn-primary" id="open-favorites-modal" href="{{route('user.requestbook.user_index')}}">View Requested Book</a>
     </div>
 
     <div class="p-4 border border-secondary">
@@ -199,7 +199,7 @@
                 'book_author': author,
             };
             
-            axios.post("{{ route('user.book.requestABook')}}", data)
+            axios.post("{{ route('user.requestbook.requestABook')}}", data)
             .then(res => {
                 location.reload();
             })

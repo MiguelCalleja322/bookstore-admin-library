@@ -8,13 +8,17 @@
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="{{route('admin.book.index')}}">Home</a>
           </li>
-          <li class="nav-item">
-            
-            <a class="nav-link" href="{{route('auth.logout')}}">Logout</a>
-            
-          </li>
+          
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="{{route('admin.user.index')}}">Users</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{{route('admin.requestedbook.index')}}">Requested Books</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="{{route('auth.logout')}}">Logout</a>
           </li>
         </ul>
       </div>
