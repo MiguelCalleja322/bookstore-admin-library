@@ -8,9 +8,13 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
-class AuthController extends Controller 
+class AuthController extends Controller
 {
-    public function index(){
+    public function index()
+    {
+
+        $authUser = Auth::user();
+
         return view('Auth.login');
     }
 
@@ -41,7 +45,7 @@ class AuthController extends Controller
 
         if($user->userRole->role->name == 'admin') {
             return redirect()->route('admin.book.index');
-        }else{
+        } else {
             return redirect()->route('user.book.index');
         }
     }

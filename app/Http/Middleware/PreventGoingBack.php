@@ -4,9 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class CheckAuthUser
+class PreventGoingBack
 {
     /**
      * Handle an incoming request.
@@ -17,18 +16,9 @@ class CheckAuthUser
      */
     public function handle(Request $request, Closure $next)
     {
-        $authUser = Auth::user();
-
-        if(! $authUser) {
-            return redirect('/');
-        }
-
-        if ($authUser && $authUser->userRole->role->name == 'admin') {
-            return redirect()->route('admin.book.index');
-        } else {
-            return redirect()->route('user.book.index');
-        }
-
-        return $next($request);
+        $response = $next($request);
+        return $response->header('Cache-Control','nocache, no-store, max-age=0, must-revalidate')
+            ->header('Pragma','no-cache')
+            ->header('Expires','Sun, 02 Jan 1990 00:00:00 GMT');
     }
 }

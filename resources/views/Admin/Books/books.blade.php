@@ -229,8 +229,6 @@
 
         //delete
 
-         //update
-
          $('#table #destroy').on('click', function (e) {
             id = $(this).data("id");
             

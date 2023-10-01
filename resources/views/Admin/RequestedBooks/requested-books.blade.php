@@ -49,6 +49,7 @@
                     <th scope="col">Author</th>
                     <th scope="col">Requested by</th>
                     <th scope="col">Status</th>
+                    <th scope="col">Reason</th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
@@ -67,7 +68,8 @@
                               <span class="badge bg-danger text-light p-3">{{ $requestedBook->status }}</span>
                             @endif
                 
-                          </td>
+                        </td>
+                        <td class="align-middle">{{$requestedBook->reason}}</td>
                         <td class="align-middle">
                             <div class="flex text-center">
                                 
@@ -101,6 +103,9 @@
     </div>
 </div>
 
+@include('Admin.RequestedBooks.modals.approve')
+@include('Admin.RequestedBooks.modals.deny')
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js" integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -116,32 +121,19 @@
         $('#table #btn_approve').on('click', function () {
             status = $(this).data('status');
             id = $(this).data('id');
-    
-            update(status, id)
+            
+            $('#approved-modal #book_id').val(id);
+            $('#approved-modal #status').val(status);
+            $('#approved-modal').modal('toggle');
         })
 
         $('#table #btn_deny').on('click', function () {
             status = $(this).data('status');
             id = $(this).data('id');
 
-            update(status, id)
+            $('#denied-modal #book_id').val(id);
+            $('#denied-modal #status').val(status);
+            $('#denied-modal').modal('toggle');
         })
-
-        function update(status, id) {
-
-            let data = {
-                'status': status,
-                'id': id,
-            }
-
-            axios.post("{{ route('admin.requestedbooks.approveOrDisapprove')}}", data)
-            .then(res => {
-                location.reload();
-            })
-            .catch(err => {
-                console.error(err.message); 
-            })
-        }
-
     })
 </script>

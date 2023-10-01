@@ -57,13 +57,13 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($users as $user)
+                @foreach ($userRoles as $userRole)
                     <tr>
-                        <td class="m-auto">{{$user->user->name}}</td>
-                        <td class="m-auto">{{$user->user->username}}</td>
-                        <td class="m-auto">{{$user->user->email}}</td>
+                        <td class="m-auto">{{$userRole->user->name}}</td>
+                        <td class="m-auto">{{$userRole->user->username}}</td>
+                        <td class="m-auto">{{$userRole->user->email}}</td>
                         <td>
-                            <img src="{{$user->user->profile_pic}}" alt="" width="150" height="200">
+                            <img src="{{$userRole->user->profile_pic}}" alt="" width="150" height="200">
                         </td>
                         <td class="">
                             <div class="flex text-center">
@@ -72,10 +72,10 @@
                                     type="button" 
                                     class="btn btn-secondary text-white" 
                                     id="open-view-modal"
-                                    data-name="{{$user->user->name}}"
-                                    data-username="{{$user->user->username}}"
-                                    data-email="{{$user->user->email}}"
-                                    data-profile_pic="{{$user->user->profile_pic}}">
+                                    data-name="{{$userRole->user->name}}"
+                                    data-username="{{$userRole->user->username}}"
+                                    data-email="{{$userRole->user->email}}"
+                                    data-profile_pic="{{$userRole->user->profile_pic}}">
                                     <i class="fa-solid fa-eye"></i>
                                     <span>View</span>
                                 </button>
@@ -84,16 +84,16 @@
                                     type="button" 
                                     class="btn btn-primary text-white" 
                                     id="open-update-modal"
-                                    data-id="{{$user->user->id}}"
-                                    data-name="{{$user->user->name}}"
-                                    data-username="{{$user->user->username}}"
-                                    data-email="{{$user->user->email}}"
-                                    data-profile_pic="{{$user->user->profile_pic}}">
+                                    data-id="{{$userRole->user->id}}"
+                                    data-name="{{$userRole->user->name}}"
+                                    data-username="{{$userRole->user->username}}"
+                                    data-email="{{$userRole->user->email}}"
+                                    data-profile_pic="{{$userRole->user->profile_pic}}">
                                     <i class="fa-solid fa-pen-nib"></i>
                                     <span>Update</span>
                                 </button>
 
-                                <button type="button" class="btn btn-danger text-white" id="destroy" data-id="{{$user->id}}">
+                                <button type="button" class="btn btn-danger text-white" id="destroy" data-id="{{$userRole->user->id}}">
                                     <i class="fa-solid fa-trash"></i>
                                     <span>Delete</span>
                                 </button>
@@ -135,7 +135,7 @@
             $('#view-modal #name').text(name);
             $('#view-modal #username').text(username);
             $('#view-modal #email').text(email);
-            $('#view-modal #profile_pic').attr('src',profile_pic);
+            $('#view-modal #profile_pic').attr('src', profile_pic);
             $('#view-modal').modal('toggle');
         });
 
@@ -173,6 +173,23 @@
         $('#store-modal #close-modal').on('click', function () {
             $('#store-modal #error-message').addClass('hidden');
             $('#store-modal').modal('hide');
+        });
+
+        $('#table #destroy').on('click', function (e) {
+            let id = $(this).data("id");
+
+            axios.post("{{ route('admin.user.delete') }}", {
+                user_id: id
+            })
+
+            .then(res => {
+                location.reload();
+            })
+
+            .catch(err => {
+                $('#error-message').removeClass('hidden');
+                $('#error-message span').text(err.message);
+            })
         });
 
     });

@@ -17,6 +17,7 @@
         <tr>
           <th scope="col">Book Name</th>
           <th scope="col">Author</th>
+          <th scope="col">Book Cover</th>
           <th scope="col">Status</th>
           <th scope="col">Date Added</th>
         </tr>
@@ -27,12 +28,15 @@
           <td class="align-middle">{{ $requestedBook->book_name }}</td>
           <td class="align-middle">{{ $requestedBook->book_author }}</td>
           <td class="align-middle">
+            <img src="{{ $requestedBook->book_cover }}" width="100" height="150">
+          </td>
+          <td class="align-middle">
             @if ($requestedBook->status == 'PENDING')
-              <span class="badge bg-warning text-dark p-3">{{ $requestedBook->status }}</span>
+              <span class="badge bg-warning text-light p-3">{{ $requestedBook->status }}</span>
             @elseif ($requestedBook->status == 'APPROVED')
-              <span class="badge bg-success text-dark p-3">{{ $requestedBook->status }}</span>
+              <span class="badge bg-success text-light p-3">{{ $requestedBook->status }}</span>
             @else 
-              <span class="badge bg-danger text-dark p-3">{{ $requestedBook->status }}</span>
+              <span class="badge bg-danger text-light p-3">{{ $requestedBook->status }}</span>
             @endif
 
           </td>

@@ -183,32 +183,6 @@
             $('#store-modal #error-message').addClass('hidden');
             $('#store-modal').modal('hide');
         });
-
-        $('#store-modal #store').on('click', function () {
-            let name = $('#store-modal #name').val();
-            let author = $('#store-modal #author').val();
-           
-            if (name == '' || author == '') {
-                $('#store-modal #error-message').removeClass('hidden');
-                $('#store-modal #error-message span').text('Name and Author must not be empty');
-                return;
-            }
-
-            let data = {
-                'book_name': name,
-                'book_author': author,
-            };
-            
-            axios.post("{{ route('user.requestbook.requestABook')}}", data)
-            .then(res => {
-                location.reload();
-            })
-
-            .catch(err => {
-                $('#store-modal #error-message').removeClass('hidden');
-                $('#store-modal #error-message span').text(err.message);
-            })
-        });
     });
 
    

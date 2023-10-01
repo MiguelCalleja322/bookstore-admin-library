@@ -10,10 +10,13 @@ class RequestedBook extends Model
         'user_id',
         'book_name',
         'book_author',
-        'status'
+        'book_cover',
+        'status',
+        'reason'
     ];
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }
